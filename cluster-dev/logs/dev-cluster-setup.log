@@ -1,0 +1,18 @@
+Creating Dev Cluster...
+Creating cluster "saas-dev" ...
+ • Ensuring node image (kindest/node:v1.34.0) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.34.0) 🖼
+ • Preparing nodes 📦   ...
+ ✗ Preparing nodes 📦 
+Deleted nodes: ["saas-dev-control-plane"]
+ERROR: failed to create cluster: command "docker run --name saas-dev-control-plane --hostname saas-dev-control-plane --label io.x-k8s.kind.role=control-plane --privileged --security-opt seccomp=unconfined --security-opt apparmor=unconfined --tmpfs /tmp --tmpfs /run --volume /var --volume /lib/modules:/lib/modules:ro -e KIND_EXPERIMENTAL_CONTAINERD_SNAPSHOTTER --detach --tty --label io.x-k8s.kind.cluster=saas-dev --net kind --restart=on-failure:1 --init=false --cgroupns=private --publish=0.0.0.0:30080:30080/TCP --publish=0.0.0.0:30443:30443/TCP --publish=127.0.0.1:36563:6443/TCP -e KUBECONFIG=/etc/kubernetes/admin.conf kindest/node:v1.34.0@sha256:7416a61b42b1662ca6ca89f02028ac133a309a2a30ba309614e8ec94d976dc5a" failed with error: exit status 125
+
+Command Output: 0191d0f9064fdfadc012a40be8384791569d3c802b0dd8546df2e2b98897f9e6
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint saas-dev-control-plane (81bb45ddf3fd88e99c6a3109b007f46f7777b1b2c18a3ef28528941eb13e33da): Bind for 0.0.0.0:30443 failed: port is already allocated
+
+Run 'docker run --help' for more information
+error: context "kind-saas-dev" does not exist
+Error from server (AlreadyExists): namespaces "dev" already exists
+Error from server (AlreadyExists): namespaces "qua" already exists
+deployment.apps/nginx-deployment unchanged
+service/nginx-service unchanged
