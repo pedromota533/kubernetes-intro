@@ -1,11 +1,11 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: hello-world
+  name: triggerdev
   namespace: istio-ingress
 spec:
   hosts:
-    - "hello-world.local"  # domain that triggers this route
+    - "triggerdev.local"
   gateways:
     - istio-ingress/main-gateway
   http:
@@ -14,6 +14,6 @@ spec:
             prefix: /
       route:
         - destination:
-            host: hello-world.hello-world.svc.cluster.local
+            host: trigger-webapp.triggerdev.svc.cluster.local
             port:
-              number: 3040
+              number: 3030

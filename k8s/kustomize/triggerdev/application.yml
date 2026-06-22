@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
 
-  # Multi-source: OCI chart + git repo for values
+  # Multi-source: OCI chart + git repo for values + routing
   sources:
     # Source 1: Helm chart from OCI registry
     - repoURL: oci://ghcr.io/triggerdotdev/charts
@@ -25,13 +25,15 @@ spec:
       targetRevision: HEAD
       ref: values
 
+    # Source 3: VirtualService for istio routing (owned by this app)
+    - repoURL: https://github.com/pedromota533/kubernetes-intro
+      targetRevision: HEAD
+      path: k8s/helm/triggerdev/routing
+
   destination:
     server: https://kubernetes.default.svc
     namespace: triggerdev
 
   syncPolicy:
-    automated:
-      prune: true      # Remove resources deleted from git
-      selfHeal: true   # Revert manual changes in the cluster
     syncOptions:
       - CreateNamespace=true

@@ -6,7 +6,7 @@ NAMESPACE     := argocd
 HTTP_PORT     := 30080
 HTTPS_PORT    := 30443
 
-.PHONY: install uninstall link unlink port-forward password status deploy-apps remove-apps nuke-apps
+.PHONY: install uninstall link unlink port-forward password status deploy-apps remove-apps nuke-apps prune-apps
 
 Logs:
 	mkdir -p logs
@@ -16,13 +16,15 @@ install: Logs
 	@$(BIN) apply --server-side --force-conflicts -k $(BOOTSTRAP_DIR) > logs/install.log 2>&1 || (echo "Installation failed. Check logs/install.log for details." && exit 1)
 
 uninstall: Logs
-	@echo "Step 1/3 — Stopping ArgoCD auto-sync (unlink root app)..."
-	@$(BIN) delete -f $(ROOT_APP) --ignore-not-found
-	@echo "Step 2/3 — Removing finalizers and deleting all ArgoCD Applications..."
+	@echo "Step 1/3 — Removing finalizers from root app and all Applications..."
+	@$(BIN) patch -f $(ROOT_APP) --type=json \
+		-p='[{"op":"remove","path":"/metadata/finalizers"}]' 2>/dev/null || true
 	@for app in $$($(BIN) get applications.argoproj.io -n $(NAMESPACE) -o name 2>/dev/null); do \
 		$(BIN) patch $$app -n $(NAMESPACE) --type=json \
 			-p='[{"op":"remove","path":"/metadata/finalizers"}]' 2>/dev/null || true; \
 	done
+	@echo "Step 2/3 — Deleting root app and all Applications..."
+	@$(BIN) delete -f $(ROOT_APP) --ignore-not-found
 	@$(BIN) delete applications.argoproj.io --all -n $(NAMESPACE) --ignore-not-found
 	@echo "Step 3/3 — Uninstalling ArgoCD..."
 	@$(BIN) delete -k $(BOOTSTRAP_DIR) --ignore-not-found
@@ -54,6 +56,13 @@ deploy-apps:
 
 remove-apps:
 	$(BIN) delete -k $(APPS_DIR) --ignore-not-found
+
+# Delete namespaces left behind when uninstall ran without finalizers
+prune-apps:
+	@echo "Pruning app namespaces left behind by uninstall..."
+	@for ns in triggerdev istio-system istio-ingress; do \
+		$(BIN) delete namespace $$ns --ignore-not-found; \
+	done
 
 # Delete every ArgoCD Application in the cluster (cascade-deletes managed resources via finalizers)
 nuke-apps:

@@ -22,9 +22,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: istio-system
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
@@ -49,9 +46,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: istio-system
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
@@ -76,9 +70,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: istio-ingress
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
@@ -103,8 +94,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: istio-ingress
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
