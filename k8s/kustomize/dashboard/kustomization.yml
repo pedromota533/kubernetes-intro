@@ -4,4 +4,3 @@ resources:
 - prometheus.yml
 - dashboard-app.yml
 - admin-user.yml
-- virtual-service.yml
