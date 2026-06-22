@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: hello-world
-  namespace: hello-world
+  namespace: istio-ingress
 spec:
   hosts:
     - "hello-world.local"  # domain that triggers this route
