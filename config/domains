@@ -3,3 +3,4 @@
 # All resolve to NODE_IP (default: 127.0.0.1)
 
 triggerdev.local    # Trigger.dev webapp
+kiali.local         # Kiali — Istio observability dashboard
