@@ -21,10 +21,10 @@ This project follows the **GitOps** pattern: the Git repository is the single so
 │  │  └──────────┘             └─────────────────────────────┘  │  │
 │  │       │ deploys                                             │  │
 │  │       ▼                                                     │  │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐                │  │
-│  │  │  Istio   │  │  ArgoCD  │  │ Traefik  │                │  │
-│  │  │ control  │  │   UI     │  │ ingress  │                │  │
-│  │  └──────────┘  └──────────┘  └──────────┘                │  │
+│  │  ┌──────────┐  ┌──────────┐                             │  │
+│  │  │  ArgoCD  │  │ Traefik  │                             │  │
+│  │  │   UI     │  │ ingress  │                             │  │
+│  │  └──────────┘  └──────────┘                             │  │
 │  │       │                                                     │  │
 │  │  ┌──────────────────────────────────────────────────────┐   │  │
 │  │  │          Traefik Ingress (:80)                       │   │  │
@@ -75,16 +75,9 @@ There is a clear separation between the **bootstrap phase** (one-time, manual) a
 
 ---
 
-## Sync Wave Order
+## Application Order
 
-ArgoCD Applications use **sync waves** to control deployment order. This ensures dependencies are ready before dependent applications start:
-
-| Wave | Application         | Reason                                    |
-|------|---------------------|-------------------------------------------|
-| 1    | `istio-base`        | Installs Istio CRDs first                 |
-| 2    | `istiod`            | Control plane depends on CRDs             |
-
-Traefik is provided by K3s and is not deployed as an ArgoCD child Application.
+Traefik is provided by K3s and is not deployed as an ArgoCD child Application. The root ArgoCD Application applies the Traefik Ingress and middleware manifests directly from `k8s/kustomize/gateway-config/`.
 
 ---
 
@@ -103,7 +96,6 @@ http://argocd.local             → argocd-server.argocd.svc.cluster.local:80
 | Namespace            | Contents                                      |
 |----------------------|-----------------------------------------------|
 | `argocd`             | ArgoCD server, repo-server, application-controller |
-| `istio-system`       | istiod                                       |
 | `kube-system`        | K3s Traefik ingress controller               |
 
 ---

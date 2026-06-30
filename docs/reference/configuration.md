@@ -69,20 +69,12 @@ make hosts-add NODE_IP=192.168.1.50
 | k3s            | latest    | `https://get.k3s.io`                              |
 | ArgoCD         | stable    | `https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml` |
 | Traefik        | bundled   | K3s default packaged component                    |
-| Istio          | 1.22.3    | `https://istio-release.storage.googleapis.com/charts` |
 
 ---
 
-## ArgoCD Sync Waves
+## ArgoCD Managed Resources
 
-Sync waves control the order in which ArgoCD deploys Applications within a single sync operation:
-
-| Wave | Application              | Reason                                         |
-|------|--------------------------|------------------------------------------------|
-| 1    | `istio-base`             | CRDs must exist before other Istio components  |
-| 2    | `istiod`                 | Requires Istio CRDs                            |
-
-Traefik is installed by K3s, so the ArgoCD Ingress and middleware under `k8s/kustomize/gateway-config/` are applied directly by the root application instead of through a separate child Application.
+Traefik is installed by K3s, so the ArgoCD Ingress and middleware under `k8s/kustomize/gateway-config/` are applied directly by the root application instead of through separate child Applications.
 
 ---
 
@@ -108,5 +100,3 @@ Add new domains by appending a line to `config/domains`, then run `make hosts-ad
 
 To use a fork, update all `repoURL` fields in:
 - `k8s/bootstrap/root-app.yml`
-- `k8s/kustomize/istio/base.yml`
-- `k8s/kustomize/istio/istiod.yml`

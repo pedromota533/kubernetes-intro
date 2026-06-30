@@ -13,7 +13,6 @@ This project provisions a fully functional Kubernetes cluster on a local machine
 | k3s            | Lightweight Kubernetes distribution          | latest      |
 | ArgoCD         | GitOps continuous delivery                   | stable      |
 | Traefik        | Default K3s ingress controller               | bundled     |
-| Istio          | Service mesh control plane, no ingress gateway | 1.22.3    |
 
 ---
 
@@ -53,7 +52,6 @@ After step 4, ArgoCD will automatically sync and deploy all applications defined
 | [Components](docs/architecture/components.md) | All deployed components explained |
 | [k3s Installation](docs/installation/k3s.md) | k3s setup and management |
 | [ArgoCD Installation](docs/installation/argocd.md) | ArgoCD bootstrap and configuration |
-| [Istio](docs/applications/istio.md) | Service mesh control plane |
 | [Observability](docs/applications/observability.md) | Kiali observability setup |
 | [Make Targets](docs/operations/make-targets.md) | Full reference of all `make` commands |
 | [Hosts Management](docs/operations/hosts.md) | Local DNS via /etc/hosts |
@@ -72,7 +70,6 @@ After step 4, ArgoCD will automatically sync and deploy all applications defined
 ├── k8s/
 │   ├── bootstrap/            # ArgoCD installation manifests
 │   └── kustomize/            # All application manifests (GitOps)
-│       ├── istio/            # Istio control plane
 │       └── gateway-config/   # Traefik Ingress + Middleware
 ├── make/                     # Makefile modules
 │   ├── vars.mk               # Variables

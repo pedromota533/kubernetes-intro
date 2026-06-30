@@ -1,6 +1,6 @@
 # Documentation
 
-Complete documentation for the `kubernetes-intro` project — a local Kubernetes homelab built on k3s with ArgoCD GitOps and Istio service mesh.
+Complete documentation for the `kubernetes-intro` project — a local Kubernetes homelab built on k3s with ArgoCD GitOps and Traefik ingress.
 
 ---
 
@@ -27,7 +27,6 @@ Complete documentation for the `kubernetes-intro` project — a local Kubernetes
 ### 📦 Applications
 | Document | Description |
 |---|---|
-| [Istio](applications/istio.md) | Service mesh control plane |
 | [Observability](applications/observability.md) | Historical Kiali observability notes |
 
 ### 🔧 Operations

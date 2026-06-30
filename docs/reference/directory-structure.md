@@ -25,13 +25,8 @@ k3s.install/
 │   │
 │   └── kustomize/                    # All application manifests (managed by ArgoCD)
 │       │
-│       ├── kustomization.yml         # Root kustomize: includes istio/ and gateway-config/
+│       ├── kustomization.yml         # Root kustomize: includes gateway-config/
 │       │
-│       └── istio/                    # Istio control plane (ArgoCD Applications)
-│           ├── kustomization.yml
-│           ├── base.yml              # App: installs istio-base CRDs (wave 1)
-│           ├── istiod.yml            # App: installs istiod control plane (wave 2)
-│       
 │       └── gateway-config/           # Traefik Ingress + Middleware
 │           ├── kustomization.yml
 │           ├── argocd-filter.yml     # Middleware: private network IP allow-list
