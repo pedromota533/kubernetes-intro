@@ -80,11 +80,7 @@ Traefik is installed by K3s, so the ArgoCD Ingress and middleware under `k8s/kus
 
 ## Local Domains
 
-Defined in `config/domains`:
-
-| Domain             | Resolves to (default) | Service               |
-|--------------------|-----------------------|-----------------------|
-| `argocd.local`     | `127.0.0.1`           | ArgoCD UI             |
+No local domains are required for the default ArgoCD route. ArgoCD is exposed at `http://localhost/argocd`.
 
 Add new domains by appending a line to `config/domains`, then run `make hosts-add`.
 

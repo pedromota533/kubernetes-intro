@@ -89,7 +89,7 @@ Once running, services are available at:
 
 | Service       | URL                               | Credentials            |
 |---------------|-----------------------------------|------------------------|
-| ArgoCD        | `http://argocd.local`             | `admin` / see `make password` |
+| ArgoCD        | `http://localhost/argocd`         | `admin` / see `make password` |
 
 **Note:** ArgoCD is exposed by Traefik through an IP allow-list middleware. By default, only loopback and private network source ranges are allowed.
 

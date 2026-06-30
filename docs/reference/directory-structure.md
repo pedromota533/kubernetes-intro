@@ -30,7 +30,7 @@ k3s.install/
 │       └── gateway-config/           # Traefik Ingress + Middleware
 │           ├── kustomization.yml
 │           ├── argocd-filter.yml     # Middleware: private network IP allow-list
-│           └── argocd-ingress.yml    # Ingress: argocd.local → ArgoCD
+│           └── argocd-ingress.yml    # Ingress: localhost/argocd → ArgoCD
 │
 ├── make/                             # Makefile modules (included by Makefile)
 │   ├── vars.mk                       # All variables (paths, ports, colors)

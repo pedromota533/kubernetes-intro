@@ -1,5 +1,3 @@
 # Domains managed by this project
 # Format: <subdomain>   # <description>
 # All resolve to NODE_IP (default: 127.0.0.1)
-
-argocd.local        # ArgoCD web UI

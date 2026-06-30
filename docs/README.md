@@ -45,7 +45,6 @@ Complete documentation for the `kubernetes-intro` project — a local Kubernetes
 
 ## Quick Links
 
-- **ArgoCD UI (domain):** `http://argocd.local`
-- **ArgoCD UI:** `http://argocd.local`
+- **ArgoCD UI:** `http://localhost/argocd`
 - **Get ArgoCD password:** `make password`
 - **See all make targets:** `make help`

@@ -86,7 +86,7 @@ Traefik is provided by K3s and is not deployed as an ArgoCD child Application. T
 All HTTP traffic enters the cluster through the **K3s bundled Traefik ingress controller** on port 80. Kubernetes Ingress resources route traffic to backend services, and Traefik middleware applies the traffic filter:
 
 ```
-http://argocd.local             → argocd-server.argocd.svc.cluster.local:80
+http://localhost/argocd         → argocd-server.argocd.svc.cluster.local:80
 ```
 
 ---

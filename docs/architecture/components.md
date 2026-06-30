@@ -26,7 +26,7 @@ In this project k3s is installed with:
 ## ArgoCD
 
 **Namespace:** `argocd`  
-**Exposed at:** `http://argocd.local`  
+**Exposed at:** `http://localhost/argocd`  
 **Managed by:** Bootstrap (`make install`)
 
 ArgoCD is the GitOps engine of this project. It continuously watches this Git repository and reconciles the cluster state to match what is defined in `k8s/kustomize/`.
@@ -35,7 +35,7 @@ ArgoCD is the GitOps engine of this project. It continuously watches this Git re
 
 ArgoCD is installed in insecure mode (HTTP only) and exposed via Traefik:
 
-1. **Domain-based access:** `http://argocd.local` (requires `/etc/hosts` entry)
+1. **Path-based access:** `http://localhost/argocd`
 2. **Traffic filtering:** Traefik middleware allows loopback and private network source ranges
 
 An Ingress routes traffic to the ArgoCD server service.
@@ -57,7 +57,7 @@ Traefik is the default K3s ingress controller. It watches Kubernetes Ingress res
 
 The active routing manifests live in `k8s/kustomize/gateway-config/`:
 
-- `argocd-ingress.yml` routes `argocd.local` to `argocd-server`
+- `argocd-ingress.yml` routes `localhost/argocd` to `argocd-server`
 - `argocd-filter.yml` restricts traffic to loopback and private network ranges
 
 ---
