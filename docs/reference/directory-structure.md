@@ -25,21 +25,17 @@ k3s.install/
 │   │
 │   └── kustomize/                    # All application manifests (managed by ArgoCD)
 │       │
-│       ├── kustomization.yml         # Root kustomize: includes istio/
+│       ├── kustomization.yml         # Root kustomize: includes istio/ and gateway-config/
 │       │
-│       └── istio/                    # Istio service mesh (ArgoCD Applications)
+│       └── istio/                    # Istio control plane (ArgoCD Applications)
 │           ├── kustomization.yml
 │           ├── base.yml              # App: installs istio-base CRDs (wave 1)
 │           ├── istiod.yml            # App: installs istiod control plane (wave 2)
-│           ├── ingress-gateway.yml   # App: installs Istio ingress gateway (wave 3)
-│           └── gateway-config.yml    # App: applies gateway-config/ (wave 4)
 │       
-│       └── gateway-config/           # Istio Gateway CR + VirtualServices
+│       └── gateway-config/           # Traefik Ingress + Middleware
 │           ├── kustomization.yml
-│           ├── namespace.yml         # Creates istio-ingress namespace
-│           ├── gateway.yml           # Gateway: http-gateway on ports 80 and 443
-│           ├── kiali-vs.yml          # VirtualService: kiali.local → Kiali
-│           └── argocd-vs.yml         # VirtualService: argocd.local + /argocd → ArgoCD
+│           ├── argocd-filter.yml     # Middleware: private network IP allow-list
+│           └── argocd-ingress.yml    # Ingress: argocd.local → ArgoCD
 │
 ├── make/                             # Makefile modules (included by Makefile)
 │   ├── vars.mk                       # All variables (paths, ports, colors)

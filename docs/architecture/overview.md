@@ -21,14 +21,14 @@ This project follows the **GitOps** pattern: the Git repository is the single so
 │  │  └──────────┘             └─────────────────────────────┘  │  │
 │  │       │ deploys                                             │  │
 │  │       ▼                                                     │  │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │  │
-│  │  │  Istio   │  │  GitLab  │  │ MongoDB  │  │  Kiali   │   │  │
-│  │  │  (mesh)  │  │   CE     │  │+ Express │  │+Prometheus│   │  │
-│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐                │  │
+│  │  │  Istio   │  │  ArgoCD  │  │ Traefik  │                │  │
+│  │  │ control  │  │   UI     │  │ ingress  │                │  │
+│  │  └──────────┘  └──────────┘  └──────────┘                │  │
 │  │       │                                                     │  │
 │  │  ┌──────────────────────────────────────────────────────┐   │  │
-│  │  │          Istio Ingress Gateway (:80)                 │   │  │
-│  │  │     routes traffic via VirtualService rules          │   │  │
+│  │  │          Traefik Ingress (:80)                       │   │  │
+│  │  │   routes traffic via Ingress + Middleware rules      │   │  │
 │  │  └──────────────────────────────────────────────────────┘   │  │
 │  └─────────────────────────────────────────────────────────────┘  │
 │                            ▲                                      │
@@ -83,19 +83,17 @@ ArgoCD Applications use **sync waves** to control deployment order. This ensures
 |------|---------------------|-------------------------------------------|
 | 1    | `istio-base`        | Installs Istio CRDs first                 |
 | 2    | `istiod`            | Control plane depends on CRDs             |
-| 3    | `istio-ingress`     | Gateway depends on istiod                 |
-| 4    | `istio-gateway-config` | Gateway CRs depend on the gateway pod  |
+
+Traefik is provided by K3s and is not deployed as an ArgoCD child Application.
 
 ---
 
 ## Traffic Routing
 
-All HTTP traffic enters the cluster through the **Istio Ingress Gateway** on ports 80 (HTTP) and 443 (HTTPS). VirtualService resources route traffic to backend services based on host or URI prefix:
+All HTTP traffic enters the cluster through the **K3s bundled Traefik ingress controller** on port 80. Kubernetes Ingress resources route traffic to backend services, and Traefik middleware applies the traffic filter:
 
 ```
 http://argocd.local             → argocd-server.argocd.svc.cluster.local:80
-http://localhost/argocd         → argocd-server.argocd.svc.cluster.local:80
-http://kiali.local              → kiali.istio-system.svc.cluster.local:20001
 ```
 
 ---
@@ -105,8 +103,8 @@ http://kiali.local              → kiali.istio-system.svc.cluster.local:20001
 | Namespace            | Contents                                      |
 |----------------------|-----------------------------------------------|
 | `argocd`             | ArgoCD server, repo-server, application-controller |
-| `istio-system`       | istiod, Kiali                                 |
-| `istio-ingress`      | Istio ingress gateway pod, Gateway CR         |
+| `istio-system`       | istiod                                       |
+| `kube-system`        | K3s Traefik ingress controller               |
 
 ---
 

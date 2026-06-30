@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
 - base.yml
 - istiod.yml
-- ingress-gateway.yml
-- gateway-config.yml

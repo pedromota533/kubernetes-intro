@@ -3,4 +3,3 @@
 # All resolve to NODE_IP (default: 127.0.0.1)
 
 argocd.local        # ArgoCD web UI
-kiali.local         # Kiali — Istio observability dashboard

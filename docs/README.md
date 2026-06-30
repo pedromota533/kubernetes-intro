@@ -27,8 +27,8 @@ Complete documentation for the `kubernetes-intro` project — a local Kubernetes
 ### 📦 Applications
 | Document | Description |
 |---|---|
-| [Istio](applications/istio.md) | Service mesh, ingress gateway, and VirtualService routing |
-| [Observability](applications/observability.md) | Kiali observability and service graph |
+| [Istio](applications/istio.md) | Service mesh control plane |
+| [Observability](applications/observability.md) | Historical Kiali observability notes |
 
 ### 🔧 Operations
 | Document | Description |
@@ -47,7 +47,6 @@ Complete documentation for the `kubernetes-intro` project — a local Kubernetes
 ## Quick Links
 
 - **ArgoCD UI (domain):** `http://argocd.local`
-- **ArgoCD UI (path):** `http://localhost/argocd`
-- **Kiali:** `http://kiali.local`
+- **ArgoCD UI:** `http://argocd.local`
 - **Get ArgoCD password:** `make password`
 - **See all make targets:** `make help`

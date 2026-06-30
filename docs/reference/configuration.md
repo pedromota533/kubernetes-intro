@@ -41,14 +41,13 @@ make hosts-add NODE_IP=192.168.1.50
 | Port  | Protocol | Service                    | How to reach                                |
 |-------|----------|----------------------------|---------------------------------------------|
 | 30080 | TCP/HTTP | ArgoCD UI                  | `http://localhost:30080`                    |
-| 80    | TCP/HTTP | Istio ingress gateway      | Accessed via `localhost` or custom hostnames |
+| 80    | TCP/HTTP | Traefik ingress controller | Accessed via custom hostnames                 |
 | 8080  | TCP/HTTP | ArgoCD (port-forward only) | `make port-forward` → `http://localhost:8080`|
 
 ### Cluster-Internal Ports
 
 | Port  | Service             | DNS name                                            |
 |-------|---------------------|-----------------------------------------------------|
-| 20001 | Kiali               | `kiali.istio-system.svc.cluster.local`              |
 | 80    | ArgoCD Server       | `argocd-server.argocd.svc.cluster.local`            |
 
 ---
@@ -60,7 +59,6 @@ make hosts-add NODE_IP=192.168.1.50
 | Service       | Username | Password         | How to change                                   |
 |---------------|----------|------------------|-------------------------------------------------|
 | ArgoCD        | `admin`  | auto-generated   | Use ArgoCD UI → User Info → Change Password     |
-| Kiali         | —        | —                | Auth disabled (`auth.strategy: anonymous`)       |
 
 ---
 
@@ -70,8 +68,8 @@ make hosts-add NODE_IP=192.168.1.50
 |----------------|-----------|---------------------------------------------------|
 | k3s            | latest    | `https://get.k3s.io`                              |
 | ArgoCD         | stable    | `https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml` |
+| Traefik        | bundled   | K3s default packaged component                    |
 | Istio          | 1.22.3    | `https://istio-release.storage.googleapis.com/charts` |
-| Kiali          | 2.7.0     | `https://kiali.org/helm-charts`                   |
 
 ---
 
@@ -83,8 +81,8 @@ Sync waves control the order in which ArgoCD deploys Applications within a singl
 |------|--------------------------|------------------------------------------------|
 | 1    | `istio-base`             | CRDs must exist before other Istio components  |
 | 2    | `istiod`                 | Requires Istio CRDs                            |
-| 3    | `istio-ingress`          | Requires istiod to be running                  |
-| 4    | `istio-gateway-config`   | Requires ingress gateway pod to exist          |
+
+Traefik is installed by K3s, so the ArgoCD Ingress and middleware under `k8s/kustomize/gateway-config/` are applied directly by the root application instead of through a separate child Application.
 
 ---
 
@@ -95,7 +93,6 @@ Defined in `config/domains`:
 | Domain             | Resolves to (default) | Service               |
 |--------------------|-----------------------|-----------------------|
 | `argocd.local`     | `127.0.0.1`           | ArgoCD UI             |
-| `kiali.local`      | `127.0.0.1`           | Kiali dashboard       |
 
 Add new domains by appending a line to `config/domains`, then run `make hosts-add`.
 
@@ -111,4 +108,5 @@ Add new domains by appending a line to `config/domains`, then run `make hosts-ad
 
 To use a fork, update all `repoURL` fields in:
 - `k8s/bootstrap/root-app.yml`
-- `k8s/kustomize/istio/gateway-config.yml`
+- `k8s/kustomize/istio/base.yml`
+- `k8s/kustomize/istio/istiod.yml`
