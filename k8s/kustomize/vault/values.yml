@@ -7,6 +7,7 @@ injector:
 
 server:
   enabled: true
+  updateStrategyType: RollingUpdate
   affinity: ""
   dataStorage:
     enabled: true
