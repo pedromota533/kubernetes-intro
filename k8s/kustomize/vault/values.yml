@@ -7,25 +7,46 @@ injector:
 
 server:
   enabled: true
+  affinity: ""
   dataStorage:
     enabled: true
     size: 1Gi
   standalone:
+    enabled: false
+  ha:
     enabled: true
-    config: |-
-      ui = true
+    replicas: 3
+    raft:
+      enabled: true
+      setNodeId: true
+      config: |-
+        ui = true
 
-      listener "tcp" {
-        tls_disable = 1
-        address = "[::]:8200"
-        cluster_address = "[::]:8201"
-      }
+        listener "tcp" {
+          tls_disable = 1
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
+        }
 
-      storage "file" {
-        path = "/vault/data"
-      }
+        storage "raft" {
+          path = "/vault/data"
 
-      api_addr = "https://vault.local"
+          retry_join {
+            leader_api_addr = "http://vault-0.vault-internal:8200"
+          }
+
+          retry_join {
+            leader_api_addr = "http://vault-1.vault-internal:8200"
+          }
+
+          retry_join {
+            leader_api_addr = "http://vault-2.vault-internal:8200"
+          }
+        }
+
+        service_registration "kubernetes" {}
+
+        api_addr = "https://vault.local"
   ingress:
     enabled: true
     ingressClassName: traefik
